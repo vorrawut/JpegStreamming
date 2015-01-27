@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.app.jpegstreamming" >
+
+    <!-- Tell the system this app requires OpenGL ES 2.0. -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/edit"
+        android:label="@string/ALV_Camera_Security"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.app.jpegstreamming.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/ALV_Camera_Security" >
+
+            //definition main launcher
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+        </activity>
+        <activity
+            android:name=".Menu"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/ALV_Camera_Security" >
+
+
+
+        </activity>
+    </application>
+
+</manifest>
