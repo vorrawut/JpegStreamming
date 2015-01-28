@@ -158,6 +158,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
+        //test
     }
 
     public void surfaceCreated(SurfaceHolder arg0) {
