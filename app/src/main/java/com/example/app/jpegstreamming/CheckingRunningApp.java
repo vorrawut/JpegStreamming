@@ -17,4 +17,5 @@ public class CheckingRunningApp extends Application {
     }
 
     private static boolean activityVisible = true;
+
 }

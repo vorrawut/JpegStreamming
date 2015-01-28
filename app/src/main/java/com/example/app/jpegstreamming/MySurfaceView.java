@@ -121,9 +121,9 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             Log.d("BackEnd", "viewHeight : " + viewHeight);
             Log.d("BackEnd", "heightImg : " + heightImg);
             Log.d("BackEnd", "widthImg : " + widthImg);
+            newHeight = (int) Math.floor((float) (heightImg / widthImg) * getWidth());
 
-
-            canvas.drawBitmap(bitmap, 0, 0, null);
+//            canvas.drawBitmap(bitmap, 0, 0, null);
 
         if (displayScreenOrientation.equals("ORIENTATION_PORTRAIT")) {
             if (bitmap != null) {
@@ -161,6 +161,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceCreated(SurfaceHolder arg0) {
+        Log.d("BackEnd","On method surfaceCreated "+ CheckingRunningApp.isActivityVisible());
         _thread.setRunning(true);
         _thread.start();
     }

@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceView;
@@ -25,6 +26,9 @@ public class MainActivity extends Activity {
     private String screenOrientation = "ORIENTATION_PORTRAIT";
     private RetrieveUrl retrieveUrl;
     private AlertDialog.Builder alertDialog;
+    private int widthScreen;
+    private int heightScreen;
+    private CheckingRunningApp checkRunningApp;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +37,20 @@ public class MainActivity extends Activity {
 
         Log.d("BackEnd", "behide set the layout ");
         //get size of Screen Divice
-        Display display = getWindowManager().getDefaultDisplay();
+       /* Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int widthScreen = size.x;
-        int heightScreen = size.y;
+        int heightScreen = size.y;*/
+
+        checkRunningApp = new CheckingRunningApp();
+
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        heightScreen = metrics.heightPixels;
+        widthScreen = metrics.widthPixels;
 
         //Get current screen orientation
         Display displayRotate = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
@@ -99,5 +112,35 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, (android.view.Menu) menu);
         return true;
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+
+    @Override
+    protected void onPause() {
+        checkRunningApp.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        checkRunningApp.activityResumed();
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        checkRunningApp.activityPaused();
+        super.onBackPressed();
     }
 }
