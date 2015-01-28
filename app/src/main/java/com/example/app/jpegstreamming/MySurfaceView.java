@@ -38,9 +38,15 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private int newHeight;
     private int viewWidth;
     private int viewHeight;
+    private CheckingRunningApp checkingRunningApp;
+    private int heightLayout;
+    private int widthLayout;
 
-    public MySurfaceView(Context context) {
+    public MySurfaceView(Context context,CheckingRunningApp checkingRunningApp,int widthScreen,int heightScreen) {
         super(context);
+        this.checkingRunningApp = checkingRunningApp;
+        this.widthScreen = widthScreen;
+        this.heightScreen = heightScreen;
         init(context, null, 0, 0);
     }
 
@@ -66,8 +72,9 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         this.defStyleAttr = defStyleAttr;
         this.defStyleRes = defStyleRes;
         getHolder().addCallback(this);
-        _thread = new TutorialThread(getHolder(), this);
-
+        _thread = new TutorialThread(getHolder(), this,checkingRunningApp);
+        heightLayout = getHeight();
+        widthLayout = getWidth();
         initAlertDialog();
 
     }
@@ -95,18 +102,18 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+            super.onDraw(canvas);
         try {
 
             Log.d("BackEnd", "On Method onDraw ");
-//        Bitmap _scratch = BitmapFactory.decodeResource(getResources(),
-//                R.drawable.cat);
+        Bitmap _scratch = BitmapFactory.decodeResource(getResources(),
+                R.drawable.cat);
 
 //        int cal = (int)Math.floor((float)(widthImg/heightImg)*getHeight());
 //        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, getHeight(), cal, true);
 //        Log.d("BackEnd", "Bitmap : " + _scratch);
-            bitmap = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.cat);
+//            bitmap = BitmapFactory.decodeResource(getResources(),
+//                    R.drawable.cat);
 
             viewWidth = canvas.getHeight();
             viewHeight = canvas.getHeight();
@@ -116,21 +123,21 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             Log.d("BackEnd", "getHeight : " + getHeight());
             Log.d("BackEnd", "getWidth : " + getWidth());
             Log.d("BackEnd", "viewWidth : " + viewWidth);
-            Log.d("BackEnd", "getMeasuredHeight : " + getMeasuredHeight());
-            Log.d("BackEnd", "getMeasuredWidth : " + getMeasuredWidth());
+            Log.d("BackEnd", "heightLayout : " + heightLayout);
+            Log.d("BackEnd", "widthLayout : " + widthLayout);
             Log.d("BackEnd", "viewHeight : " + viewHeight);
             Log.d("BackEnd", "heightImg : " + heightImg);
             Log.d("BackEnd", "widthImg : " + widthImg);
-            newHeight = (int) Math.floor((float) (heightImg / widthImg) * getWidth());
-
+//            newHeight = (int) Math.floor((float) (heightImg / widthImg) * getWidth());
+//            newBitmap = Bitmap.createScaledBitmap(bitmap, viewWidth, newHeight, false);
 //            canvas.drawBitmap(bitmap, 0, 0, null);
 
         if (displayScreenOrientation.equals("ORIENTATION_PORTRAIT")) {
             if (bitmap != null) {
-                newHeight = (int) Math.floor((float) (heightImg / widthImg) * viewWidth);
+                newHeight = (int) Math.floor(((float)heightImg / (float)widthImg) * (float)getWidth());
                 Log.d("BackEnd", "newHeight : " + newHeight);
                 if(newHeight != 0) {
-                    newBitmap = Bitmap.createScaledBitmap(bitmap, viewWidth, newHeight, false);
+                    newBitmap = Bitmap.createScaledBitmap(bitmap, getWidth(), newHeight, false);
                     if (newBitmap != null) {
                         canvas.drawBitmap(newBitmap, 0, 0, null);
                     }
@@ -139,10 +146,10 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             }
         } else if (displayScreenOrientation.equals("ORIENTATION_LANDSCAPE")) {
             if (bitmap != null) {
-                newWidth = (int) Math.floor((float) (widthImg / heightImg) * viewHeight);
+                newWidth = (int) Math.floor(((float)widthImg / (float)heightImg) * (float)getHeight());
                 Log.d("BackEnd", "newWidth : " + newWidth);
                 if(newWidth != 0) {
-                    newBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, viewHeight, false);
+                    newBitmap = Bitmap.createScaledBitmap(bitmap, getHeight(), newWidth, false);
                     if (newBitmap != null) {
                         canvas.drawBitmap(newBitmap, 0, 0, null);
                     }
@@ -151,19 +158,35 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         } else {
             alertDialog.show();
         }
+
         }catch (Exception e){
             Log.d("BackEnd","Error"+ e);
         }
 
     }
 
-    public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
+    public void surfaceChanged(SurfaceHolder arg0, int format, int width, int height) {
     }
 
     public void surfaceCreated(SurfaceHolder arg0) {
-        Log.d("BackEnd","On method surfaceCreated "+ CheckingRunningApp.isActivityVisible());
+        Log.d("BackEnd","On method surfaceCreated "+ checkingRunningApp.isActivityVisible());
+        if (_thread.getState() == Thread.State.NEW)
+        {
+            _thread.setRunning(true);
+            _thread.start();
+        }else{
+            _thread.setRunning(true);
+            _thread.run();
+        }
+
+    /*
         _thread.setRunning(true);
-        _thread.start();
+        _thread.start();*/
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     public void surfaceDestroyed(SurfaceHolder arg0) {
@@ -202,12 +225,16 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         this.widthScreen = widthScreen;
     }
 
+    public void setCheckingRunningApp(CheckingRunningApp checkingRunningApp) {
+        this.checkingRunningApp = checkingRunningApp;
+    }
+
     class TutorialThread extends Thread {
         private SurfaceHolder _surfaceHolder;
         private MySurfaceView _panel;
         private boolean _run = false;
 
-        public TutorialThread(SurfaceHolder surfaceHolder, MySurfaceView panel) {
+        public TutorialThread(SurfaceHolder surfaceHolder, MySurfaceView panel, CheckingRunningApp checkingRunningApp) {
             _surfaceHolder = surfaceHolder;
             _panel = panel;
         }
