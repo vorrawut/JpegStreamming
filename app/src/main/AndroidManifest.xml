@@ -9,15 +9,34 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+
     <application
         android:allowBackup="true"
-        android:icon="@drawable/edit"
-        android:label="@string/ALV_Camera_Security"
-        android:theme="@style/AppTheme" >
+        android:icon="@drawable/shutterfuck_2"
+        android:label="@string/ALV_Camera_Security">
+        <!--     <activity
+                 android:name="com.example.app.jpegstreamming.ImmersiveStickyActivity"
+                 android:configChanges="orientation|screenSize|keyboardHidden"
+                 android:label="@string/ALV_Camera_Security"
+                 android:theme="@style/StreamingTheme">
+
+             </activity>-->
+
         <activity
             android:name="com.example.app.jpegstreamming.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/ALV_Camera_Security" >
+            android:label="@string/ALV_Camera_Security"
+            android:theme="@style/ImmersiveTheme">
+
+
+        </activity>
+        <activity
+            android:name=".Menu"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/ALV_Camera_Security"
+            android:theme="@style/AppTheme">
 
             //definition main launcher
             <intent-filter>
@@ -25,15 +44,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
-        </activity>
-        <activity
-            android:name=".Menu"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/ALV_Camera_Security" >
-
-
 
         </activity>
     </application>

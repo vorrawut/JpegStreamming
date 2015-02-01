@@ -5,4 +5,23 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="StreamingTheme" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen"></style>
+
+    <style name="ImmersiveTheme" parent="android:Theme.Holo">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/ImmersiveActionBarStyle</item>
+    </style>
+
+    <style name="ImmersiveStickyTheme" parent="ImmersiveTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="ImmersiveActionBarStyle" parent="android:Widget.Holo.ActionBar.Solid">
+        <item name="android:background">@color/fullscreen_control_overlay_color</item>
+        <item name="android:icon">@drawable/shutterfuck</item>
+    </style>
+
 </resources>

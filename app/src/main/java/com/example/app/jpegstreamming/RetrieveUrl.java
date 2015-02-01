@@ -48,10 +48,12 @@ public class RetrieveUrl extends AsyncTask<Void, Void, String> {
 
     protected String doInBackground(Void... params) {
         Log.d("vut", "In method doInBackground");
+        long lastLoopTime = System.currentTimeMillis();
         try {
             URL aURL = new URL("http://192.168.1.1:8080/?action=snapshot&n=");
             int i = 0;
             while (true) {
+
                 conn = (HttpURLConnection) aURL.openConnection();
                 conn.getResponseMessage();
                 conn.setConnectTimeout(HTTP_CONNECT_TIMEOUT); //set timeout to 5 seconds
@@ -79,7 +81,7 @@ public class RetrieveUrl extends AsyncTask<Void, Void, String> {
                 mView.setDisplayScreenOrientation(displayScreenOrientation);
                 heightImg = bitmap.getHeight();
                 widthImg = bitmap.getWidth();
-                if(heightImg !=0 && widthImg != 0) {
+                if (heightImg != 0 && widthImg != 0) {
                     mView.setHeightImg(heightImg);
                     mView.setWidthImg(widthImg);
                     Log.d("vut", " heightImg In Loop: " + heightImg);
@@ -95,9 +97,13 @@ public class RetrieveUrl extends AsyncTask<Void, Void, String> {
 //                    Log.d("vut", "imgHeight : " + heightImg );
 //                    Log.d("vut", "imgwidth : " + widthImg );
                         i++;
+                        long delta = System.currentTimeMillis() - lastLoopTime;
+                        lastLoopTime = System.currentTimeMillis();
+//                        Log.d("BackEnd", "lastLooptime : " + lastLoopTime);
                     }
                 }
             }
+
         } catch (java.net.SocketTimeoutException e) {
 //            Toast.makeText(applicationContext, "Please Connect ALV Wifi", Toast.LENGTH_LONG).show();
             Log.d("BackEnd", "Error :" + e);
