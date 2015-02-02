@@ -8,7 +8,7 @@
     <string name="title_activity_main_activity2">MainActivity2</string>
     <string name="immersive_mode">Immersive Mode</string>
     <string name="immersive_sticky">Immersive/Sticky</string>
-    <string name="placeholder_button">Placeholder Button</string>
+    <string name="disconnect_button">Disconnect</string>
     <string name="placeholder_content">IMMERSIVE\nCONTENT</string>/>
 
 </resources>

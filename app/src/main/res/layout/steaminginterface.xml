@@ -1,48 +1,67 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_streamming"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_streamming"
     tools:context=".MainActivity">
 
 
-    <!--<com.example.app.jpegstreamming.MySurfaceView-->
-    <!--android:id="@+id/surfaceView"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="fill_parent"-->
-    <!--android:layout_alignParentEnd="false"-->
-    <!--android:layout_alignParentRight="false"-->
-    <!--android:layout_alignParentTop="false"-->
-    <!--android:layout_alignWithParentIfMissing="false"-->
-    <!--android:orientation="vertical" />-->
     <!-- <Button
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:id="@+id/btn"
          android:text="change img"/>-->
-    <FrameLayout
+    <!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="bottom"-->
+    <!--android:clipToPadding="false"-->
+    <!--android:id="@+id/onFrameLayout"-->
+    <!--android:fitsSystemWindows="true">-->
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/fullscreen_content_controls"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|center_horizontal"-->
+    <!--android:background="@color/fullscreen_control_overlay_color"-->
+    <!--android:orientation="horizontal">-->
+
+
+    <LinearLayout
+        android:id="@+id/jpeg_SurfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:id="@+id/onFrameLayout"
-        android:fitsSystemWindows="true">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
+        <!--<com.example.app.jpegstreamming.MySurfaceView-->
+        <!--android:id="@+id/surfaceView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentEnd="false"-->
+        <!--android:layout_alignParentRight="false"-->
+        <!--android:layout_alignParentTop="false"-->
+        <!--android:layout_alignWithParentIfMissing="false"-->
+        <!--android:orientation="vertical" />-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fullscreen_content_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/disconnect_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/fullscreen_control_overlay_color"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:selectableItemBackground"
+            android:text="@string/disconnect_button" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/placeholder_button"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:text="@string/placeholder_button"
-                android:background="?android:selectableItemBackground" />
+    <!--</LinearLayout>-->
+    <!--</FrameLayout>-->
 
-        </LinearLayout>
-    </FrameLayout>
 </FrameLayout>

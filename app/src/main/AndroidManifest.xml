@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.app.jpegstreamming" >
+    package="com.example.app.jpegstreamming">
 
     <!-- Tell the system this app requires OpenGL ES 2.0. -->
     <uses-feature
@@ -16,14 +16,6 @@
         android:allowBackup="true"
         android:icon="@drawable/shutterfuck_2"
         android:label="@string/ALV_Camera_Security">
-        <!--     <activity
-                 android:name="com.example.app.jpegstreamming.ImmersiveStickyActivity"
-                 android:configChanges="orientation|screenSize|keyboardHidden"
-                 android:label="@string/ALV_Camera_Security"
-                 android:theme="@style/StreamingTheme">
-
-             </activity>-->
-
         <activity
             android:name="com.example.app.jpegstreamming.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

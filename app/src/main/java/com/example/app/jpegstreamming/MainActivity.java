@@ -14,13 +14,21 @@ import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+    private static final int INITIAL_HIDE_DELAY = 300;
+    private final Handler mHideHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            hideSystemUI();
+        }
+    };
     private MySurfaceView mView;
     private String screenOrientation = "ORIENTATION_PORTRAIT";
     private RetrieveUrl retrieveUrl;
@@ -29,23 +37,17 @@ public class MainActivity extends Activity {
     private int heightScreen;
     private CheckingRunningApp checkRunningApp;
     private View mDecorView;
-    private static final int INITIAL_HIDE_DELAY = 300;
-    private LinearLayout controlsView;
-    private FrameLayout contentView;
-    private final Handler mHideHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            hideSystemUI();
-        }
-    };
-
+    private View controlsView;
+    private View contentView;
+    private View buttonView;
+    private Button disconnectBtn;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.steaminginterface);
-        Log.d("BackEnd", "On method onCreate ");
-
-        Log.d("BackEnd", "behide set the layout ");
+//        Log.d("BackEnd", "On method onCreate ");
+//
+//        Log.d("BackEnd", "behide set the layout ");
         //get size of Screen Divice
        /* Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -74,8 +76,13 @@ public class MainActivity extends Activity {
         mView.setDisplayScreenOrientation(screenOrientation);
 
         //Get Framelayout
-        FrameLayout layout_Streamming = (FrameLayout) findViewById(R.id.layout_streamming);
+        LinearLayout layout_Streamming = (LinearLayout) findViewById(R.id.jpeg_SurfaceView);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mView.setLayoutParams(params);
+        layout_Streamming.addView(mView);
 
+//        FrameLayout inside = (FrameLayout) findViewById(R.id.layout_streamming);
+//        inside.setVisibility(View.VISIBLE);
 
 //        setContentView(mView);
         //initialize AlertDialog
@@ -108,8 +115,10 @@ public class MainActivity extends Activity {
 
 
         //Immersive Mode
-        contentView = (FrameLayout) findViewById(R.id.onFrameLayout);
-        controlsView = (LinearLayout) findViewById(R.id.fullscreen_content_controls);
+        controlsView = findViewById(R.id.fullscreen_content_controls);
+        contentView = findViewById(R.id.jpeg_SurfaceView);
+//        buttonView = findViewById(R.id.placeholder_button);
+
 //        Log.d("BackEnd","controlsView value : "+controlsView);
         // Immersive Mode
         mDecorView = getWindow().getDecorView();
@@ -117,11 +126,14 @@ public class MainActivity extends Activity {
         mDecorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
-                Log.d("BackEnd", "mDecorView.SYSTEM_UI_FLAG_HIDE_NAVIGATION value : " + mDecorView.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+//                Log.d("BackEnd", "mDecorView.SYSTEM_UI_FLAG_HIDE_NAVIGATION value : " + mDecorView.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
                 boolean visible = (visibility & mDecorView.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0;
                 controlsView.animate()
                         .alpha(visible ? 1 : 0)
                         .translationY(visible ? 0 : controlsView.getHeight());
+//                    buttonView.animate()
+//                            .alpha(visible ? 1 : 0)
+//                            .translationY(visible ? 0 : controlsView.getHeight());
 
             }
         });
@@ -131,12 +143,12 @@ public class MainActivity extends Activity {
                 new GestureDetector.SimpleOnGestureListener() {
                     @Override
                     public boolean onSingleTapUp(MotionEvent e) {
-                        Log.d("BackEnd", "On method onSingleTapUp " + e);
                         boolean visible = (mDecorView.getSystemUiVisibility()
                                 & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0;
                         if (visible) {
                             hideSystemUI();
                         } else {
+//                            Log.d("BackEnd", "In clickDetector showSytemUI");
                             showSystemUI();
                         }
                         return true;
@@ -147,15 +159,31 @@ public class MainActivity extends Activity {
         contentView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.d("BackEnd", "On method onTouch " + event);
+//                Log.d("BackEnd", "On method onTouch " + event);
                 return clickDetector.onTouchEvent(event);
             }
         });
 
+        /*buttonView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d("BackEnd", "On method onTouch " + event);
+                return clickDetector.onTouchEvent(event);
+            }
+        });*/
+
         showSystemUI();
 
         //add surfaceView
-        layout_Streamming.addView(mView);
+
+        disconnectBtn = (Button) findViewById(R.id.disconnect_button);
+        disconnectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
 
@@ -182,6 +210,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onStop() {
+        checkRunningApp.activityPaused();
         super.onStop();
     }
 
@@ -205,7 +234,10 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        Log.d("BackEnd", "On method onBackPressed");
         checkRunningApp.activityPaused();
+        onStop();
+
         super.onBackPressed();
     }
 
@@ -216,7 +248,7 @@ public class MainActivity extends Activity {
         // When the window loses focus (e.g. the action overflow is shown),
         // cancel any pending hide action. When the window gains focus,
         // hide the system UI.
-        Log.d("BackEnd", "On method onWindowFocusChanged " + hasFocus);
+//        Log.d("BackEnd", "On method onWindowFocusChanged " + hasFocus);
         if (hasFocus) {
             delayedHide(INITIAL_HIDE_DELAY);
         } else {
@@ -234,7 +266,6 @@ public class MainActivity extends Activity {
 
     // Immersive Mode
     private void hideSystemUI() {
-        Log.d("BackEnd", "On method hideSystemUI ");
         mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -246,7 +277,7 @@ public class MainActivity extends Activity {
 
     // Immersive Mode
     private void showSystemUI() {
-        Log.d("BackEnd", "On method showSystemUI ");
+//        Log.d("BackEnd", "On method showSystemUI ");
         mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -264,7 +295,7 @@ public class MainActivity extends Activity {
 
     // Immersive Mode
     private void delayedHide(int delayMillis) {
-        Log.d("BackEnd", "On method delayedHide " + delayMillis);
+//        Log.d("BackEnd", "On method delayedHide " + delayMillis);
         mHideHandler.removeMessages(0);
         mHideHandler.sendEmptyMessageDelayed(0, delayMillis);
     }

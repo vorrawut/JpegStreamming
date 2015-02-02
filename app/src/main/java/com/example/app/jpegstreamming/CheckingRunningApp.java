@@ -4,6 +4,8 @@ import android.app.Application;
 
 public class CheckingRunningApp extends Application {
 
+    private static boolean activityVisible = true;
+
     public static boolean isActivityVisible() {
         return activityVisible;
     }
@@ -15,7 +17,5 @@ public class CheckingRunningApp extends Application {
     public static void activityPaused() {
         activityVisible = false;
     }
-
-    private static boolean activityVisible = true;
 
 }

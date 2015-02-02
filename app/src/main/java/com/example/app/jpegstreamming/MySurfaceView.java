@@ -151,7 +151,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             }
 
         } catch (Exception e) {
-            Log.d("BackEnd", "Error" + e);
+            Log.d("BackEnd", "Error : " + e);
         }
 
     }
@@ -160,17 +160,30 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceCreated(SurfaceHolder arg0) {
+        Log.d("BackEnd", "On method surfaceCreated " + _thread.getState());
         Log.d("BackEnd", "On method surfaceCreated " + checkingRunningApp.isActivityVisible());
-        if (_thread.getState() == Thread.State.NEW) {
+        if (_thread.getState() == Thread.State.NEW && !_thread.isAlive() && checkingRunningApp.isActivityVisible()) {
+            Log.d("BackEnd", "true");
+
+
             _thread.setRunning(true);
             _thread.start();
+
         } else {
+            Log.d("BackEnd", "false");
+            Log.d("BackEnd", "On method surfaceCreated ");
+//            _thread.interrupt();
+//            _thread.setRunning(true);
+//            _thread.destroy();
+            _thread = new TutorialThread(getHolder(), this, checkingRunningApp);
             _thread.setRunning(true);
-            _thread.run();
+            _thread.start();
+//            _thread.resume();
+//        }else{
+//            Log.e("BackEnd","ERROR : ");
         }
 
-    /*
-        _thread.setRunning(true);
+        /*_thread.setRunning(true);
         _thread.start();*/
     }
 
