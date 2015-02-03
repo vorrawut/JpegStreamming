@@ -152,10 +152,10 @@ public class Menu extends Activity {
             } else {
 //                Toast.makeText(Menu.this, "Successful Loading ", Toast.LENGTH_LONG).show();
 
-                toast = Toast.makeText(Menu.this,
-                        "Successful Loading ", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 450);
-                toast.show();
+//                toast = Toast.makeText(Menu.this,
+//                        "Successful Loading ", Toast.LENGTH_SHORT);
+//                toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 450);
+//                toast.show();
             }
         } else {
             Toast.makeText(Menu.this, "Please Open Wifi cannot connect this program ", Toast.LENGTH_LONG).show();

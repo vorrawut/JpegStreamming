@@ -53,7 +53,8 @@ public class RetrieveUrl extends AsyncTask<Void, Void, String> {
             URL aURL = new URL("http://192.168.1.1:8080/?action=snapshot&n=");
             int i = 0;
             while (true) {
-
+                if (isCancelled())
+                    break;
                 conn = (HttpURLConnection) aURL.openConnection();
                 conn.getResponseMessage();
                 conn.setConnectTimeout(HTTP_CONNECT_TIMEOUT); //set timeout to 5 seconds

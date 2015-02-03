@@ -41,11 +41,13 @@ public class MainActivity extends Activity {
     private View contentView;
     private View buttonView;
     private Button disconnectBtn;
+    private int timesPressed;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.steaminginterface);
-//        Log.d("BackEnd", "On method onCreate ");
+
+        Log.d("BackEnd", "On method onCreate ");
 //
 //        Log.d("BackEnd", "behide set the layout ");
         //get size of Screen Divice
@@ -180,7 +182,8 @@ public class MainActivity extends Activity {
         disconnectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                killMe();
+
             }
         });
 
@@ -210,12 +213,14 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onStop() {
-        checkRunningApp.activityPaused();
+        Log.d("BackEnd", "onStop");
+//        checkRunningApp.activityPaused();
         super.onStop();
     }
 
     @Override
     protected void onStart() {
+        Log.d("BackEnd", "onStart");
         super.onStart();
     }
 
@@ -223,23 +228,99 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         checkRunningApp.activityPaused();
+        Log.d("BackEnd", "onPause");
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         checkRunningApp.activityResumed();
+        Log.d("BackEnd", "onResume");
         super.onResume();
     }
 
     @Override
     public void onBackPressed() {
-        Log.d("BackEnd", "On method onBackPressed");
-        checkRunningApp.activityPaused();
-        onStop();
+        Log.d("BackEnd", "onBackPressed");
+//        try {
+        //Thread.currentThread().destroy();
+
+//        }catch (UnsupportedOperationException e){
+//                   Log.d("BackEnd","Error on method onBackPressed : " +e);
+//            onStop();
+//             onDestroy();
+//        }
 
         super.onBackPressed();
+        killMe();
     }
+
+    private void killMe() {
+        retrieveUrl.cancel(true);
+        retrieveUrl = null;
+        mView = null;
+
+        this.finish();
+        return;
+    }
+
+    //    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        // if the back button is pressed
+//        Thread time = new Thread();
+//        Log.d("BackEnd","In method onKeyDown");
+//        if(keyCode == KeyEvent.KEYCODE_BACK)
+//        {
+//            Log.d("BackEnd","result : true ");
+//            timesPressed++; //increment on every back button pressed
+//
+//            //on first press start timer(sleep thread) and wait for key press
+//            if(timesPressed == 1)
+//            {
+//                Toast.makeText(
+//                        getBaseContext(),
+//                        "Waiting to consider , Press again to exit.",
+//                        Toast.LENGTH_SHORT)
+//                        .show();
+//                time = new Thread(){
+//                    public void run(){
+//                        try {
+//                            synchronized(this){
+//
+//                                // Wait given period of time or exit on touch
+//                                wait(2500);
+//                                //if the key is still 1 then the user has not clicked back button
+//                                if(timesPressed == 1){
+//                                    timesPressed = 0;    //reset for next press
+//                                }
+//                                //else times pressed will be more than 1 as the (thread woken) will resume @ line 142
+//                                else{
+//                                    //finish activity
+//                                    checkRunningApp.activityPaused();
+////                                    Thread.currentThread().interrupt();
+//                                    finish();
+//                                }
+//                            }
+//                        }
+//                        catch(InterruptedException ex){
+//                            ex.printStackTrace();
+//                        }
+//                    }
+//                };
+//                time.start();
+//                return false;
+//            }
+//            //if key pressed wake thread
+//            else {
+//                //wake thread from sleep
+//                synchronized(time){
+//                    time.notifyAll();
+//                }
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

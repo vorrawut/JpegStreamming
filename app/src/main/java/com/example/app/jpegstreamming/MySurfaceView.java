@@ -160,12 +160,12 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceCreated(SurfaceHolder arg0) {
-        Log.d("BackEnd", "On method surfaceCreated " + _thread.getState());
-        Log.d("BackEnd", "On method surfaceCreated " + checkingRunningApp.isActivityVisible());
+        Log.d("BackEnd", "On method surfaceCreated Thread state : " + _thread.getState());
+        Log.d("BackEnd", "On method surfaceCreated Activity : " + checkingRunningApp.isActivityVisible());
         if (_thread.getState() == Thread.State.NEW && !_thread.isAlive() && checkingRunningApp.isActivityVisible()) {
             Log.d("BackEnd", "true");
 
-
+//            _thread.interrupt();
             _thread.setRunning(true);
             _thread.start();
 
